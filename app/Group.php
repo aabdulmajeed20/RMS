@@ -8,11 +8,24 @@ class Group extends Model
 {
     public function reports()
     {
-        $this->belongsToMany('App\Report');
+        return $this->hasMany('App\Report');
     }
 
     public function users()
     {
-        $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User');
+    }
+
+    public function checkUserAssigned($user)
+    {
+        $users = $this->users()->get();
+        if($users->contains($user)) return true;
+        
+        return false;
+    }
+
+    public function assignUser($user)
+    {
+        $this->users()->syncWithoutDetaching($user->id);
     }
 }

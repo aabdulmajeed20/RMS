@@ -39,11 +39,33 @@ class User extends Authenticatable
 
     public function roles()
     {
-        $this->belongsToMany('App\Role');
+        return $this->belongsToMany('App\Role');
     }
 
     public function groups()
     {
-        $this->belongsToMany('App\Group');
+        return $this->belongsToMany('App\Group');
     }
+
+    public function assignGroup($group)
+    {
+        return $this->groups()->syncWithoutDetaching($group);
+    }
+
+    public function getGroupReports()
+    {
+        return $this->groups->map->reports;
+    }
+
+    public function reports()
+    {
+        return $this->hasMany('App\Report');
+    }
+
+    public function getGroupsIds()
+    {
+        return $this->groups->map(function($group) {
+            return $group->id;
+        });
+    }    
 }

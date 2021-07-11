@@ -17,6 +17,8 @@ class CreateInitialsTables extends Migration
             $table->id();
             $table->string('name');
             $table->string('content');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('group_id');
             $table->timestamps();
         });
         Schema::create('tags', function (Blueprint $table) {
@@ -49,12 +51,6 @@ class CreateInitialsTables extends Migration
         Schema::create('tag_report', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tag_id');
-            $table->unsignedBigInteger('report_id');
-            $table->timestamps();
-        });
-        Schema::create('group_report', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('report_id');
             $table->timestamps();
         });

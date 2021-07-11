@@ -8,6 +8,6 @@ class Ability extends Model
 {
     public function roles()
     {
-        $this->belongsToMany('App\Role');
+        return $this->belongsToMany('App\Role');
     }
 }

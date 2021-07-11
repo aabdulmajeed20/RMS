@@ -8,10 +8,10 @@ class Role extends Model
 {
     public function abilities()
     {
-        $this->belongsToMany('App\Ability');
+        return $this->belongsToMany('App\Ability');
     }
     public function users()
     {
-        $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User');
     }
 }
