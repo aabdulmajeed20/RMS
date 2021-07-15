@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
+
+    protected $fillable = [
+        'name',
+    ];
+
     public function reports()
     {
         return $this->hasMany('App\Report');
@@ -24,8 +29,13 @@ class Group extends Model
         return false;
     }
 
-    public function assignUser($user)
+    public function assignUsers($users)
     {
-        $this->users()->syncWithoutDetaching($user->id);
+        $this->users()->sync($users);
+    }
+
+    public function hasUser($user)
+    {
+        return $this->users->contains($user);
     }
 }

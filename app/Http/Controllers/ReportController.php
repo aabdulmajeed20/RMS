@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
 use App\Group;
 use App\Report;
+use App\Tag;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Input\Input;
 
 class ReportController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +38,8 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $groups = $user->groups()->get();
-        return view('reports.create', compact('groups'));
+        $tags = Tag::all();
+        return view('reports.create', compact('groups', 'tags'));
     }
 
     /**
@@ -43,9 +54,10 @@ class ReportController extends Controller
         $report = Report::create([
             'name' => $request['report_name'],
             'content' => $request['content'],
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'group_id' => $request['group_id']
         ]);
-        $report->assignGroup($request['group']);
+        $report->assignTags($request['tags']);
         return redirect()->route('home');
     }
 
@@ -58,6 +70,7 @@ class ReportController extends Controller
     public function show($id)
     {
         $report = Report::find($id);
+        Gate::authorize('view', $report);
         return view('reports.show', compact('report'));
     }
 
@@ -69,7 +82,12 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        //
+        $report = Report::find($id);
+        Gate::authorize('update', $report);
+        $user = Auth::user();
+        $groups = $user->groups()->get();
+        $tags = Tag::all();
+        return view('reports.edit', compact('report', 'groups', 'tags', 'files'));
     }
 
     /**
@@ -81,7 +99,19 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $report = Report::find($id);
+        Gate::authorize('update', $report);
+
+        $report->content = $request['content'];
+        $report->name = $request['report_name'];
+        $report->user_id = Auth::user()->id;
+        $report->group_id = $request['group_id'];
+        $report->update();
+        if($request->hasFile('files')) {
+            $report->addFiles($request->file('files'));
+        }
+        $report->assignTags($request['tags']);
+        return redirect()->route('report.show', ['id' => $id]);
     }
 
     /**
@@ -92,6 +122,15 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $report = Report::find($id);
+        Gate::authorize('delete', $report);
+        $report->delete();
+        return redirect()->route('home');
+    }
+    public function deleteFile($id)
+    {
+        $file = File::find($id);
+        $file->delete();
+        return back();
     }
 }

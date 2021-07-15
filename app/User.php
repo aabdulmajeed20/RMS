@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id',
     ];
 
     /**
@@ -37,9 +37,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany('App\Role');
+        return $this->belongsTo('App\Role');
     }
 
     public function groups()
@@ -47,9 +47,9 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Group');
     }
 
-    public function assignGroup($group)
+    public function assignGroups($groups)
     {
-        return $this->groups()->syncWithoutDetaching($group);
+        return $this->groups()->sync($groups);
     }
 
     public function getGroupReports()
@@ -68,4 +68,14 @@ class User extends Authenticatable
             return $group->id;
         });
     }    
+
+    public function isAdmin()
+    {
+        return $this->role_id == 1;
+    }
+
+    public function hasGroup($group)
+    {
+        return $this->groups->contains($group);
+    }
 }

@@ -7,8 +7,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-6">
-                                <h1>Create Report</h1>
+                            <div class="col-md-4">
+                                <h1>Create User</h1>
                             </div>
                         </div>
                     </div>
@@ -19,42 +19,40 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form action="{{route('report.store')}}" method="post">
+
+                        <form action="{{route('settings.users.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <h2>Report Name</h2>
-                                <input type="text" name="report_name" class="form-control">
+                                <h2>User Name</h2>
+                                <input type="text" name="user_name" class="form-control">
                             </div>
-
                             <div class="form-group">
-                                <h2>Report Group</h2>
-                                <select name="group_id" id="" class="form-control">
-                                    @foreach ($groups as $group)
-                                        <option value="{{$group->id}}">{{$group->name}}</option>
+                                <h2>User Email</h2>
+                                <input type="text" name="email" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <h2>User Password</h2>
+                                <input type="password" name="password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <h2>User Role</h2>
+                                <select name="role" id="" class="form-control">
+                                    @foreach ($roles as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-    
-                            <div class="form-group">
-                                <h2>Content</h2>
-                                <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
-                            </div>
 
-                            <div class="form-group tags">
-                                <h2>tags</h2>
-                                @foreach ($tags as $tag)
-                                    <label><input type="checkbox" name="tags[]" value="{{$tag->id}}" id="tags">  {{$tag->name}}</label>
-                                @endforeach
-                            </div>
                             <div class="form-group">
-                                <h2>Files</h2>
-                                <label for=""><input type="file" name="files[]" id="" multiple> (You can add multiple files)</label>
+                                <h2>User Groups</h2>
+                                @foreach ($groups as $group)
+                                    <label><input type="checkbox" name="groups[]" id="groups" value="{{$group->id}}">  {{$group->name}}</label>
+                                @endforeach
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="form-control btn btn-primary">Create</button>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>

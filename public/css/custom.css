@@ -1,3 +1,18 @@
 p.content {
     font-size: 2em;
 }
+
+.form-group.tags label, .form-group.files label {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 0 0 10px;
+}
+
+h2 {
+    color: slategrey;
+}
+.row.file {
+    border: ridge;
+    padding: 10px;
+    margin: 10px;
+}

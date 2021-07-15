@@ -19,7 +19,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form action="{{route('report.update')}}" method="post">
+                        <form action="{{route('report.update', ['id' => $report->id])}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <h2>Report Name</h2>
@@ -39,10 +39,28 @@
                                 <h2>Content</h2>
                                 <textarea name="content" id="" cols="30" rows="10" class="form-control">{{$report->content}}</textarea>
                             </div>
-                            <hr>
-                            <h3>Files</h3>
+                            <div class="form-group tags">
+                                <h2>tags</h2>
+                                @foreach ($tags as $tag)
+                                    <label><input type="checkbox" name="tags[]" id="tags" value="{{$tag->id}}" {{$report->hasTag($tag) ? 'checked' : ''}}>  {{$tag->name}}</label>
+                                @endforeach
+                            </div>
                             <div class="form-group">
-                                <button type="submit" class="form-control btn btn-primary">Create</button>
+                                <h2>Files</h2>
+                                @foreach ($report->files as $file)
+                                    <div class="row file">
+                                        <div class="col-md-6">
+                                            <span>{{$file->name}}</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a class="btn btn-danger" href="{{route('report.deleteFile', ['id' => $file->id])}}">Delete</a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <label for=""><input type="file" name="files[]" id="" multiple> (You can add multiple files)</label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary">Update</button>
                             </div>
                         </form>
 

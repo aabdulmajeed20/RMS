@@ -27,12 +27,21 @@
                         <thead class="thead-light">
                             <tr>
                                 <th style="width: 10%">#</th>
-                                <th style="width: 50%">Report Name</th>
-                                <th>
+                                <th style="width: 20%">Report Name</th>
+                                <th style="width: 20%">Report Uploader</th>
+                                <th style="width: 15%">
                                     <select id="groups">
                                             <option value="Group">Group</option>
                                             @foreach($groups as $group)
                                                 <option value="{{$group->name}}">{{$group->name}}</option>
+                                            @endforeach
+                                    </select>
+                                </th>
+                                <th style="width: 15%">
+                                    <select id="tags">
+                                            <option value="Tags">Tags</option>
+                                            @foreach($tags as $tag)
+                                                <option value="{{$tag->name}}">{{$tag->name}}</option>
                                             @endforeach
                                     </select>
                                 </th>
@@ -66,36 +75,28 @@
                 "columns": [
                     { "data": "id" },
                     { "data": "report_name" },
+                    { "data": "report_uploader" },
                     { "data": "report_group" },
+                    { "data": "tags" },
                     { "data": "creation_date" }
                 ],
                 "columnDefs": [
-                    { "orderable": false, "targets": 2 },
+                    { "orderable": false, "targets": 4 },
+                    { "orderable": false, "targets": 3 },
                     { "orderable": false, "targets": 1 } 
                 ],
-                // "language": {
-                //     "sProcessing":   "جارٍ التحميل...",
-                //     "sLengthMenu":   "أظهر _MENU_ مدخلات",
-                //     "sZeroRecords":  "لم يعثر على أية سجلات",
-                //     "sInfo":         "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
-                //     "sInfoEmpty":    "يعرض 0 إلى 0 من أصل 0 سجل",
-                //     "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
-                //     "sInfoPostFix":  "",
-                //     "sSearch":       "ابحث:",
-                //     "sUrl":          "",
-                //     "oPaginate": {
-                //         "sFirst":    "الأول",
-                //         "sPrevious": "السابق",
-                //         "sNext":     "التالي",
-                //         "sLast":     "الأخير"
-                //     }
-                // },
                 "order": [[ 0, "desc" ]]
             });
         // $("select").select2();
         $("#groups").change(function() {
             table
-                .columns(2)
+                .columns(3)
+                .search($(this).val())
+                .draw();
+        });
+        $("#tags").change(function() {
+            table
+                .columns(4)
                 .search($(this).val())
                 .draw();
         });

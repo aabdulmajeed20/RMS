@@ -64,6 +64,12 @@
                                         {{ __('Logout') }}
                                     </a>
 
+                                    @if(Auth::user()->isAdmin())
+                                        <a class="dropdown-item" href="{{ route('settings.index') }}">
+                                            {{ __('Settings') }}
+                                        </a>
+                                    @endif
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

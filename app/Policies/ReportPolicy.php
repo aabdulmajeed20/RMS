@@ -11,6 +11,20 @@ class ReportPolicy
     use HandlesAuthorization;
 
     /**
+     * Perform pre-authorization checks.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Report  $report
+     * @return void|bool
+     */
+    public function before(User $user, $report)
+    {
+        if($user->isAdmin()) {
+            return true;
+        }
+    }
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\User  $user
@@ -30,7 +44,7 @@ class ReportPolicy
      */
     public function view(User $user, Report $report)
     {
-        //
+        return $user->groups->map->reports->flatten()->contains($report);
     }
 
     /**
@@ -53,7 +67,7 @@ class ReportPolicy
      */
     public function update(User $user, Report $report)
     {
-        return $user->reports()->get()->contains($report);
+        return $user->reports->contains($report);
     }
 
     /**
@@ -65,7 +79,7 @@ class ReportPolicy
      */
     public function delete(User $user, Report $report)
     {
-        //
+        return $user->reports->contains($report);
     }
 
     /**
