@@ -13,4 +13,16 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Report');
     }
+
+    public static function CreateTagsFromList($tags)
+    {
+        $result = [];
+        foreach($tags as $tagName) {
+            $tag = Tag::firstOrCreate([
+                'name' => $tagName
+            ]);
+            array_push($result, $tag);
+        }
+        return $result;
+    }
 }

@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function getGroupReports()
     {
-        return $this->groups->map->reports;
+        return $this->groups->map->reports->flatten();
     }
 
     public function reports()

@@ -19,7 +19,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form action="{{route('report.store')}}" method="post">
+                        <form action="{{route('report.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <h2>Report Name</h2>

@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use ZipArchive;
 
 class HomeController extends Controller
 {
@@ -86,7 +87,8 @@ class HomeController extends Controller
             });
         }
 
-        $totalFiltered = $reports->count();
+        
+        $totalFiltered = sizeof($reports->get());
         DB::enableQueryLog();
         $reports = $reports->offset($start)
                         ->limit($limit)
@@ -103,7 +105,6 @@ class HomeController extends Controller
 
                 $nestedData['id'] = $report->id;
                 $nestedData['report_name'] = "<a href=\"{$show}\">$report->report_name</a>";
-                // $nestedData['report_name'] = $report->report_name;
                 $nestedData['report_uploader'] = $report->report_uploader;
                 $nestedData['report_group'] = $report->report_group;
                 $nestedData['tags'] = Report::find($report->id)->getTagsName();

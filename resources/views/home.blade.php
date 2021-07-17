@@ -10,7 +10,10 @@
                         <div class="col-md-6">
                             <h2>Reports List</h2>
                         </div>
-                        <div class="col-md-6" style="text-align: end;">
+                        <div class="col-md-3" style="text-align: end;">
+                            <a class="btn btn-primary" href="{{route('report.importReports')}}">Import Reports</a>
+                        </div>
+                        <div class="col-md-3" style="text-align: end;">
                             <a class="btn btn-primary" href="{{route('report.create')}}">Create Report</a>
                         </div>
                     </div>

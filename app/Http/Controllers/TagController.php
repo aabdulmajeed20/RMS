@@ -36,7 +36,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $tag = Tag::create([
+        $tag = Tag::firstOrCreate([
             'name' => $request['tag_name'],
         ]);
         return redirect()->route('settings.tags.index');

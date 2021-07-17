@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\File;
 use App\Group;
+use App\Imports\ReportsImport;
 use App\Report;
 use App\Tag;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Console\Input\Input;
 
 class ReportController extends Controller
@@ -132,5 +134,17 @@ class ReportController extends Controller
         $file = File::find($id);
         $file->delete();
         return back();
+    }
+
+    public function importReports()
+    {
+        return view('reports.importReports');
+    }
+
+    public function importExcel()
+    {
+        Excel::import(new ReportsImport,request()->file('excel'));
+           
+        return redirect()->route('home');
     }
 }

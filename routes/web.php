@@ -54,6 +54,15 @@ Route::prefix('Report')->name('report.')->group(function() {
         'uses' => 'ReportController@deleteFile',
         'as' => 'deleteFile'
     ]);
+    Route::get('importReports', [
+        'uses' => 'ReportController@importReports',
+        'as' => 'importReports'
+    ]);
+    Route::post('importExcel', [
+        'uses' => 'ReportController@importExcel',
+        'as' => 'importExcel'
+    ]);
+
 });
 
 // Route::get('/Settings', 'SettingsController@index')->name('settings');
