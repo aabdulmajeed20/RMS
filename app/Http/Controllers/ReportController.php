@@ -7,6 +7,8 @@ use App\Group;
 use App\Imports\ReportsImport;
 use App\Report;
 use App\Tag;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,14 +54,19 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $report = Report::create([
-            'name' => $request['report_name'],
-            'content' => $request['content'],
-            'user_id' => Auth::user()->id,
-            'group_id' => $request['group_id']
-        ]);
-        $report->assignTags($request['tags']);
+        try {
+            $report = Report::create([
+                'name' => $request['report_name'],
+                'content' => $request['content'],
+                'user_id' => Auth::user()->id,
+                'group_id' => $request['group_id']
+            ]);
+            $report->assignTags($request['tags']);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => "$e->getMessage()"]);
+        }   
         return redirect()->route('home');
     }
 
