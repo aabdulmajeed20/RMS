@@ -44,10 +44,10 @@ User can't access reports in the groups that he's not part of them.
 
 ## Demo
 [Click Here](http://rms.majeed.tech) to access the demo of the application.
-For Admin account:
+- For Admin account:
 **Email: admin@rms.com**
 **Password: 123456**
 
-For User account:
+- For User account:
 **Email: user@rms.com**
 **Password: 123456**
