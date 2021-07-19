@@ -26,17 +26,17 @@ class CommonSeeder extends Seeder
             ['name' => 'U.S.'],
             ['name' => 'General']
         ]);
-        DB::table('abilities')->insert([
-            ['name' => 'create_report'],
-            ['name' => 'view_report'],
-            ['name' => 'delete_report'],
-            ['name' => 'update_report'],
-            ['name' => 'create_group'],
-            ['name' => 'delete_group'],
-            ['name' => 'update_group'],
-            ['name' => 'assign_to_group'],
-            ['name' => 'revoke_from_group']
-        ]);
+        // DB::table('abilities')->insert([
+        //     ['name' => 'create_report'],
+        //     ['name' => 'view_report'],
+        //     ['name' => 'delete_report'],
+        //     ['name' => 'update_report'],
+        //     ['name' => 'create_group'],
+        //     ['name' => 'delete_group'],
+        //     ['name' => 'update_group'],
+        //     ['name' => 'assign_to_group'],
+        //     ['name' => 'revoke_from_group']
+        // ]);
         
     }
 }

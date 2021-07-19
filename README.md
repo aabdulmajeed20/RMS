@@ -9,11 +9,11 @@ First you should have Laravel and NPM installed in your system.
 After cloning the project, Run the below command to install composer dependencies
 > composer install
 
-Then Run npm commands:
-> npm install
-> npm run dev
+After That you should create **.env** file, just copy **.env.example** and change as instruction 
 
-After That you should create a database and name it **rms**
+After creating the file, you have to generate application key with following command:
+> php artisan key:generate
+
 After created the database, run this command:
 > php artisan migrate
 
@@ -43,4 +43,11 @@ Regarding to the **Authorization**, The user has access on the reports as follow
 User can't access reports in the groups that he's not part of them.
 
 ## Demo
-[Click Here]() to access the demo of the application.
+[Click Here](http://rms.majeed.tech) to access the demo of the application.
+For Admin account:
+**Email: admin@rms.com**
+**Password: 123456**
+
+For User account:
+**Email: user@rms.com**
+**Password: 123456**

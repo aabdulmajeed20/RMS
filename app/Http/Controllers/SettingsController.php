@@ -17,16 +17,4 @@ class SettingsController extends Controller
     {
         return view('settings.index');
     }
-    public function users()
-    {
-        
-    }
-    public function groups()
-    {
-        return view('settings.groups.index');
-    }
-    public function tags()
-    {
-        return view('settings.tags');
-    }
 }

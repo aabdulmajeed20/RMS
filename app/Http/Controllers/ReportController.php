@@ -65,7 +65,7 @@ class ReportController extends Controller
         } catch (QueryException $e) {
             return back()->with(['error_message' => 'Please fill all fields']);
         } catch(Exception $e) {
-            return back()->with(['error_message' => "$e->getMessage()"]);
+            return back()->with(['error_message' => $e->getMessage()]);
         }   
         return redirect()->route('home');
     }
@@ -108,18 +108,25 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $report = Report::find($id);
-        Gate::authorize('update', $report);
+        try {
+            $report = Report::find($id);
+            Gate::authorize('update', $report);
 
-        $report->content = $request['content'];
-        $report->name = $request['report_name'];
-        $report->user_id = Auth::user()->id;
-        $report->group_id = $request['group_id'];
-        $report->update();
-        if($request->hasFile('files')) {
-            $report->addFiles($request->file('files'));
+            $report->content = $request['content'];
+            $report->name = $request['report_name'];
+            $report->user_id = Auth::user()->id;
+            $report->group_id = $request['group_id'];
+            $report->update();
+            if($request->hasFile('files')) {
+                $report->addFiles($request->file('files'));
+            }
+            $report->assignTags($request['tags']);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
         }
-        $report->assignTags($request['tags']);
+        
         return redirect()->route('report.show', ['id' => $id]);
     }
 
@@ -138,6 +145,8 @@ class ReportController extends Controller
     }
     public function deleteFile($id)
     {
+        $report = Report::find($id);
+        Gate::authorize('delete', $report);
         $file = File::find($id);
         $file->delete();
         return back();

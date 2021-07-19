@@ -43,7 +43,7 @@ class Report extends Model
 
     public function assignTags($tags)
     {
-        if(gettype($tags[0] != "integer")) {
+        if(!empty($tags) && gettype($tags[0]) == "object") {
             $tags = $this->getIdsOfTags($tags);
         }
         $this->tags()->sync($tags);

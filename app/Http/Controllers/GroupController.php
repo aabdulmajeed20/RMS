@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Group;
 use App\User;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -38,10 +40,16 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $group = Group::create([
-            'name' => $request['group_name'],
-        ]);
-        $group->assignUsers($request['users']);
+        try {
+            $group = Group::create([
+                'name' => $request['group_name'],
+            ]);
+            $group->assignUsers($request['users']);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
+        }
         return redirect()->route('settings.groups.index');
     }
 
@@ -78,10 +86,16 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $group = Group::find($id);
-        $group->name = $request['group_name'];
-        $group->update();
-        $group->assignUsers($request['users']);
+        try {
+            $group = Group::find($id);
+            $group->name = $request['group_name'];
+            $group->update();
+            $group->assignUsers($request['users']);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
+        }
         return redirect()->route('settings.groups.index');
     }
 

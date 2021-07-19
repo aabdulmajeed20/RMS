@@ -24,12 +24,12 @@
                             @csrf
                             <div class="form-group">
                                 <h2>Report Name</h2>
-                                <input type="text" name="report_name" class="form-control">
+                                <input type="text" name="report_name" class="form-control" required>
                             </div>
 
                             <div class="form-group">
                                 <h2>Report Group</h2>
-                                <select name="group_id" id="" class="form-control">
+                                <select name="group_id" id="" class="form-control" required>
                                     @foreach ($groups as $group)
                                         <option value="{{$group->id}}">{{$group->name}}</option>
                                     @endforeach
@@ -38,7 +38,7 @@
     
                             <div class="form-group">
                                 <h2>Content</h2>
-                                <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
+                                <textarea name="content" id="" cols="30" rows="10" class="form-control" required></textarea>
                             </div>
 
                             <div class="form-group tags">

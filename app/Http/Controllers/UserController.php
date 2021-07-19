@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Group;
 use App\Role;
 use App\User;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -40,13 +42,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create([
-            'name' => $request['user_name'],
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-            'role_id' => $request['role_id']
-        ]);
-        $user->assignGroups($request['groups']);
+        try {
+            $user = User::create([
+                'name' => $request['user_name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                'role_id' => $request['role_id']
+            ]);
+            $user->assignGroups($request['groups']);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
+        }
         return redirect()->route('settings.users.index');
     }
 
@@ -84,13 +92,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        $user->name = $request['user_name'];
-        $user->email = $request['email'];
-        if($request['password']) $user->password = bcrypt($request['password']);
-        $user->role_id = $request['role'];
-        $user->update();
-        $user->assignGroups($request['groups']);
+        try {
+            $user = User::find($id);
+            $user->name = $request['user_name'];
+            $user->email = $request['email'];
+            if($request['password']) $user->password = bcrypt($request['password']);
+            $user->role_id = $request['role'];
+            $user->update();
+            $user->assignGroups($request['groups']);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
+        }
+        
         return redirect()->route('settings.users.index');
     }
 

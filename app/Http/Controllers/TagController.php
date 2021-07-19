@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Tag;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -36,9 +38,15 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $tag = Tag::firstOrCreate([
-            'name' => $request['tag_name'],
-        ]);
+        try {
+            $tag = Tag::firstOrCreate([
+                'name' => $request['tag_name'],
+            ]);
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
+        }
         return redirect()->route('settings.tags.index');
     }
 
@@ -74,9 +82,15 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tag = Tag::find($id);
-        $tag->name = $request['tag_name'];
-        $tag->update();
+        try {
+            $tag = Tag::find($id);
+            $tag->name = $request['tag_name'];
+            $tag->update();
+        } catch (QueryException $e) {
+            return back()->with(['error_message' => 'Please fill all fields']);
+        } catch(Exception $e) {
+            return back()->with(['error_message' => $e->getMessage()]);
+        }
         return redirect()->route('settings.tags.index');
     }
 
